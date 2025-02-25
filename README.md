@@ -1,15 +1,16 @@
 local library = loadstring(game:HttpGet("https://raw.githubusercontent.com/memejames/elerium-v2-ui-library/main/Library", true))()
 
-local window = library:AddWindow("BLX Clan Script | Made By Maya:3", {
+local window = library:AddWindow("BLX Clan Private Script |:3", {
     main_color = Color3.fromRGB(196, 40, 28),
     min_size = Vector2.new(550, 456),
     can_resize = false,
 })
 
 local OPtab = window:AddTab("OP Things")
+
 OPtab:AddLabel("Unequip all your pets before turning these toggles on")
 
--- Function to equip multiple pets with a 0.1 second delay
+-- Function to equip multiple pets
 local function equipMultiplePets(petName, count)
     local player = game.Players.LocalPlayer
     local petsFolder = player:WaitForChild("petsFolder"):WaitForChild("Unique")
@@ -19,12 +20,12 @@ local function equipMultiplePets(petName, count)
         if pet.Name == petName and equippedCount < count then  
             game:GetService("ReplicatedStorage").rEvents.equipPetEvent:FireServer("equipPet", pet)  
             equippedCount = equippedCount + 1  
-            wait(0.1)  -- Equip each pet with a short delay
+            task.wait(0.1)  
         end  
     end
 end
 
--- Function to unequip multiple pets with a 0.1 second delay
+-- Function to unequip multiple pets
 local function unequipMultiplePets(petName, count)
     local player = game.Players.LocalPlayer
     local petsFolder = player:WaitForChild("petsFolder"):WaitForChild("Unique")
@@ -34,13 +35,13 @@ local function unequipMultiplePets(petName, count)
         if pet.Name == petName and unequippedCount < count then  
             game:GetService("ReplicatedStorage").rEvents.equipPetEvent:FireServer("unequipPet", pet)  
             unequippedCount = unequippedCount + 1  
-            wait(0.1)  -- Unequip each pet with a short delay
+            task.wait(0.1)  
         end  
     end
 end
 
 -- OP Auto Farm Toggle
-local switchOPAutoFarm = OPtab:AddSwitch("OP Auto Farm", function(bool)
+local switchOPAutoFarm = OPtab:AddSwitch("OP Auto Farm (200 Loops)", function(bool)
     getgenv().opAutoFarm = bool
     task.spawn(function()
         if getgenv().opAutoFarm then
@@ -59,7 +60,7 @@ local switchOPAutoFarm = OPtab:AddSwitch("OP Auto Farm", function(bool)
 end)
 
 -- Fast Rebirth Toggle with pet handling
-local switchFastRebirth = OPtab:AddSwitch("Fast Rebirth", function(bool)
+local switchFastRebirth = OPtab:AddSwitch("Fast Rebirth (Combine With OP Auto Farm)", function(bool)
     getgenv().fastRebirth = bool
     task.spawn(function()
         while getgenv().fastRebirth do
@@ -70,15 +71,20 @@ local switchFastRebirth = OPtab:AddSwitch("Fast Rebirth", function(bool)
             local requiredStrength = 5000 + (rebirths.Value * 5000)
 
             if strength.Value >= requiredStrength then  
-                unequipMultiplePets("Swift Samurai", 8)  
-                equipMultiplePets("Tribal Overlord", 8)  
+                -- Unequip Tribal Overlord, then equip Swift Samurai
+                unequipMultiplePets("Tribal Overlord", 8)  -- Unequip 8 Tribal Overlords
+                task.wait(0.1)  -- Wait for 0.1 second before re-equipping
+                equipMultiplePets("Swift Samurai", 8)  -- Equip 8 Swift Samurais
 
-                task.wait(1)  
+                task.wait(1)  -- Wait 1 second before rebirth
+
+                -- Initiate rebirth process
                 game:GetService("ReplicatedStorage"):WaitForChild("rEvents"):WaitForChild("rebirthRemote"):InvokeServer("rebirthRequest")  
 
-                task.wait(0.5)  
-                unequipMultiplePets("Tribal Overlord", 8)  
-                equipMultiplePets("Swift Samurai", 8)  
+                task.wait(0.5)  -- Wait 0.5 seconds after rebirth
+                unequipMultiplePets("Swift Samurai", 8)  -- Unequip the Swift Samurai
+                task.wait(0.1)  -- Wait for 0.1 second before re-equipping
+                equipMultiplePets("Tribal Overlord", 8)  -- Equip the Tribal Overlord again
             end  
             task.wait(1)  
         end  
@@ -97,6 +103,8 @@ end)
 
 -- Server Tab
 local Server = window:AddTab("Server")
+
+-- Timer for tracking server time
 local timeSpent = 0
 local label = Server:AddLabel("Amount Of Time Spent In Server: 0 weeks, 0 days, 0 hours, 0 minutes, 0 seconds")
 
@@ -125,6 +133,7 @@ task.spawn(function()
     end
 end)
 
+-- Stats tracking
 local function abbreviateNumber(value)
     if value >= 1e15 then return string.format("%.1fQa", value / 1e15)
     elseif value >= 1e12 then return string.format("%.1fT", value / 1e12)
@@ -139,20 +148,34 @@ local function createMyLabels()
     local leaderstats = player:FindFirstChild("leaderstats")
     if not leaderstats then return end
 
-    local labels = {
-        StrengthGainedLabel = Server:AddLabel("Strength Gained in Server: 0"),
-        DurabilityGainedLabel = Server:AddLabel("Durability Gained in Server: 0"),
-        AgilityGainedLabel = Server:AddLabel("Agility Gained in Server: 0"),
-        KillsGainedLabel = Server:AddLabel("Kills Gained in Server: 0"),
-        RebirthsGainedLabel = Server:AddLabel("Rebirths Gained in Server: 0"),
-    }
+    local labels = {  
+        StrengthGainedLabel = Server:AddLabel("Strength Gained in Server: 0"),  
+        DurabilityGainedLabel = Server:AddLabel("Durability Gained in Server: 0"),  
+        AgilityGainedLabel = Server:AddLabel("Agility Gained in Server: 0"),  
+        KillsGainedLabel = Server:AddLabel("Kills Gained in Server: 0"),  
+        RebirthsGainedLabel = Server:AddLabel("Rebirths Gained in Server: 0"),  
+    }  
 
-    for _, stat in ipairs({"Strength", "Durability", "Agility", "Kills", "Rebirths"}) do
-        if leaderstats:FindFirstChild(stat) then
-            leaderstats[stat].Changed:Connect(function()
-                labels[stat .. "GainedLabel"].Text = abbreviateNumber(leaderstats[stat].Value)
-            end)
-        end
+    local initialStats = {  
+        Strength = leaderstats:FindFirstChild("Strength") and leaderstats.Strength.Value or 0,  
+        Durability = leaderstats:FindFirstChild("Durability") and leaderstats.Durability.Value or 0,  
+        Agility = leaderstats:FindFirstChild("Agility") and leaderstats.Agility.Value or 0,  
+        Kills = leaderstats:FindFirstChild("Kills") and leaderstats.Kills.Value or 0,  
+        Rebirths = leaderstats:FindFirstChild("Rebirths") and leaderstats.Rebirths.Value or 0,  
+    }  
+
+    local function updateLabels()  
+        labels.StrengthGainedLabel.Text = "Strength Gained in Server: " .. abbreviateNumber(leaderstats.Strength.Value - initialStats.Strength)  
+        labels.DurabilityGainedLabel.Text = "Durability Gained in Server: " .. abbreviateNumber(leaderstats.Durability.Value - initialStats.Durability)  
+        labels.AgilityGainedLabel.Text = "Agility Gained in Server: " .. abbreviateNumber(leaderstats.Agility.Value - initialStats.Agility)  
+        labels.KillsGainedLabel.Text = "Kills Gained in Server: " .. abbreviateNumber(leaderstats.Kills.Value - initialStats.Kills)  
+        labels.RebirthsGainedLabel.Text = "Rebirths Gained in Server: " .. (leaderstats.Rebirths.Value - initialStats.Rebirths)  
+    end  
+
+    for _, stat in ipairs({"Strength", "Durability", "Agility", "Kills", "Rebirths"}) do  
+        if leaderstats:FindFirstChild(stat) then  
+            leaderstats[stat].Changed:Connect(updateLabels)  
+        end  
     end
 end
 
