@@ -1,6 +1,6 @@
 local library = loadstring(game:HttpGet("https://raw.githubusercontent.com/memejames/elerium-v2-ui-library/main/Library", true))()
 
-local window = library:AddWindow("BLX Clan Private Script |:3", {
+local window = library:AddWindow("BLX Clan Private Script |Made By Encrypted:3", {
     main_color = Color3.fromRGB(196, 40, 28),
     min_size = Vector2.new(550, 456),
     can_resize = false,
@@ -85,7 +85,7 @@ local switchFastRebirth = OPtab:AddSwitch("Fast Rebirth (Combine With OP Auto Fa
                 -- Unequip Tribal Overlords and equip Swift Overlords
                 unequipMultiplePets("Tribal Overlord", 8)  -- Unequip 8 Tribal Overlords
                 task.wait(0.1)  -- Wait before equipping Swift Overlords
-                equipMultiplePets("Swift Overlord", 8)  -- Equip 8 Swift Overlords
+                equipMultiplePets("Swift Samurai", 8)  -- Equip 8 Swift Samurai
             end  
             task.wait()  
         end  
