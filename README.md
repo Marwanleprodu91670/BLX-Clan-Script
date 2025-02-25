@@ -9,7 +9,7 @@ local window = library:AddWindow("BLX Clan Script | Made By Maya:3", {
 local OPtab = window:AddTab("OP Things")
 OPtab:AddLabel("Unequip all your pets before turning these toggles on")
 
--- Function to equip multiple pets
+-- Function to equip multiple pets with a 0.1 second delay
 local function equipMultiplePets(petName, count)
     local player = game.Players.LocalPlayer
     local petsFolder = player:WaitForChild("petsFolder"):WaitForChild("Unique")
@@ -19,12 +19,12 @@ local function equipMultiplePets(petName, count)
         if pet.Name == petName and equippedCount < count then  
             game:GetService("ReplicatedStorage").rEvents.equipPetEvent:FireServer("equipPet", pet)  
             equippedCount = equippedCount + 1  
-            task.wait(0.1)  
+            wait(0.1)  -- Equip each pet with a short delay
         end  
     end
 end
 
--- Function to unequip multiple pets
+-- Function to unequip multiple pets with a 0.1 second delay
 local function unequipMultiplePets(petName, count)
     local player = game.Players.LocalPlayer
     local petsFolder = player:WaitForChild("petsFolder"):WaitForChild("Unique")
@@ -34,13 +34,13 @@ local function unequipMultiplePets(petName, count)
         if pet.Name == petName and unequippedCount < count then  
             game:GetService("ReplicatedStorage").rEvents.equipPetEvent:FireServer("unequipPet", pet)  
             unequippedCount = unequippedCount + 1  
-            task.wait(0.1)  
+            wait(0.1)  -- Unequip each pet with a short delay
         end  
     end
 end
 
 -- OP Auto Farm Toggle
-local switchOPAutoFarm = OPtab:AddSwitch("OP Auto Farm (200 Loops)", function(bool)
+local switchOPAutoFarm = OPtab:AddSwitch("OP Auto Farm", function(bool)
     getgenv().opAutoFarm = bool
     task.spawn(function()
         if getgenv().opAutoFarm then
@@ -59,7 +59,7 @@ local switchOPAutoFarm = OPtab:AddSwitch("OP Auto Farm (200 Loops)", function(bo
 end)
 
 -- Fast Rebirth Toggle with pet handling
-local switchFastRebirth = OPtab:AddSwitch("Fast Rebirth (Equip Tribal Overlord, then Rebirth)", function(bool)
+local switchFastRebirth = OPtab:AddSwitch("Fast Rebirth", function(bool)
     getgenv().fastRebirth = bool
     task.spawn(function()
         while getgenv().fastRebirth do
