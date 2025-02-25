@@ -43,6 +43,11 @@ end
 -- OP Auto Farm Toggle
 local switchOPAutoFarm = OPtab:AddSwitch("OP Auto Farm (200 Loops)", function(bool)
     getgenv().opAutoFarm = bool
+    if not getgenv().opAutoFarm then
+        -- Stop the auto-farming loops if disabled
+        return
+    end
+
     task.spawn(function()
         if getgenv().opAutoFarm then
             equipMultiplePets("Swift Samurai", 7)
@@ -79,7 +84,7 @@ local switchFastRebirth = OPtab:AddSwitch("Fast Rebirth (Equip Tribal Overlord, 
                 unequipMultiplePets("Swift Samurai", 8)  
                 equipMultiplePets("Tribal Overlord", 8)  
 
-                task.wait(1)  -- Wait for 1 second before triggering rebirth
+                task.wait(2)  -- Wait for 2 seconds before triggering rebirth
 
                 -- Trigger the rebirth
                 game:GetService("ReplicatedStorage"):WaitForChild("rEvents"):WaitForChild("rebirthRemote"):InvokeServer("rebirthRequest")  
@@ -149,8 +154,39 @@ end
 
 local function createMyLabels()
     local player = game.Players.LocalPlayer
-    local leaderstats = player:FindFirstChild("leaderstats")
-    if not leaderstats then return end
+    local leaderstats = player:WaitForChild("leaderstats")
+    if not leaderstats then
+        -- If leaderstats does not exist, create it
+        local leaderstatsFolder = Instance.new("Folder")
+        leaderstatsFolder.Name = "leaderstats"
+        leaderstatsFolder.Parent = player
+
+        -- Create the required stats if not present
+        local strengthStat = Instance.new("IntValue")
+        strengthStat.Name = "Strength"
+        strengthStat.Value = 0
+        strengthStat.Parent = leaderstatsFolder
+
+        local durabilityStat = Instance.new("IntValue")
+        durabilityStat.Name = "Durability"
+        durabilityStat.Value = 0
+        durabilityStat.Parent = leaderstatsFolder
+
+        local agilityStat = Instance.new("IntValue")
+        agilityStat.Name = "Agility"
+        agilityStat.Value = 0
+        agilityStat.Parent = leaderstatsFolder
+
+        local killsStat = Instance.new("IntValue")
+        killsStat.Name = "Kills"
+        killsStat.Value = 0
+        killsStat.Parent = leaderstatsFolder
+
+        local rebirthsStat = Instance.new("IntValue")
+        rebirthsStat.Name = "Rebirths"
+        rebirthsStat.Value = 0
+        rebirthsStat.Parent = leaderstatsFolder
+    end
 
     local labels = {  
         StrengthGainedLabel = Server:AddLabel("Strength Gained in Server: 0"),  
