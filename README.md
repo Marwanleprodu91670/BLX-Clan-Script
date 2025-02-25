@@ -10,7 +10,7 @@ local OPtab = window:AddTab("OP Things")
 
 OPtab:AddLabel("Unequip all your pets before turning these toggles on")
 
--- Function to equip multiple pets
+-- Function to equip multiple pets with no delay between each pet
 local function equipMultiplePets(petName, count)
     local player = game.Players.LocalPlayer
     local petsFolder = player:WaitForChild("petsFolder"):WaitForChild("Unique")
@@ -20,12 +20,11 @@ local function equipMultiplePets(petName, count)
         if pet.Name == petName and equippedCount < count then  
             game:GetService("ReplicatedStorage").rEvents.equipPetEvent:FireServer("equipPet", pet)  
             equippedCount = equippedCount + 1  
-            task.wait(0.1)  
         end  
     end
 end
 
--- Function to unequip multiple pets
+-- Function to unequip multiple pets with no delay between each pet
 local function unequipMultiplePets(petName, count)
     local player = game.Players.LocalPlayer
     local petsFolder = player:WaitForChild("petsFolder"):WaitForChild("Unique")
@@ -35,7 +34,6 @@ local function unequipMultiplePets(petName, count)
         if pet.Name == petName and unequippedCount < count then  
             game:GetService("ReplicatedStorage").rEvents.equipPetEvent:FireServer("unequipPet", pet)  
             unequippedCount = unequippedCount + 1  
-            task.wait(0.1)  
         end  
     end
 end
@@ -77,7 +75,7 @@ local switchFastRebirth = OPtab:AddSwitch("Fast Rebirth (Combine With OP Auto Fa
 
                 -- Equip 8 Tribal Overlords
                 equipMultiplePets("Tribal Overlord", 8)  
-                task.wait(0.1)  -- Wait before rebirth
+                task.wait(2)  -- Wait 2 seconds before rebirth
 
                 -- Perform rebirth event
                 game:GetService("ReplicatedStorage"):WaitForChild("rEvents"):WaitForChild("rebirthRemote"):InvokeServer("rebirthRequest")  
@@ -86,11 +84,10 @@ local switchFastRebirth = OPtab:AddSwitch("Fast Rebirth (Combine With OP Auto Fa
 
                 -- Unequip Tribal Overlords and equip Swift Overlords
                 unequipMultiplePets("Tribal Overlord", 8)  -- Unequip 8 Tribal Overlords
-                task.wait(0.1)  -- Wait for 0.1 second before equipping Swift Overlords
+                task.wait(0.1)  -- Wait before equipping Swift Overlords
                 equipMultiplePets("Swift Overlord", 8)  -- Equip 8 Swift Overlords
-                task.wait(0.1)  -- Wait to finish equipping Swift Overlords
             end  
-            task.wait(1)  
+            task.wait()  
         end  
     end)
 end)
