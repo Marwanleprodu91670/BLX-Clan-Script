@@ -10,7 +10,7 @@ local OPtab = window:AddTab("OP Things")
 
 OPtab:AddLabel("Unequip all your pets before turning these toggles on")
 
--- Function to equip multiple pets with no delay between each pet
+-- Function to equip multiple pets
 local function equipMultiplePets(petName, count)
     local player = game.Players.LocalPlayer
     local petsFolder = player:WaitForChild("petsFolder"):WaitForChild("Unique")
@@ -20,11 +20,12 @@ local function equipMultiplePets(petName, count)
         if pet.Name == petName and equippedCount < count then  
             game:GetService("ReplicatedStorage").rEvents.equipPetEvent:FireServer("equipPet", pet)  
             equippedCount = equippedCount + 1  
+            task.wait(0.1)  -- Short wait between equips
         end  
     end
 end
 
--- Function to unequip multiple pets with no delay between each pet
+-- Function to unequip multiple pets
 local function unequipMultiplePets(petName, count)
     local player = game.Players.LocalPlayer
     local petsFolder = player:WaitForChild("petsFolder"):WaitForChild("Unique")
@@ -34,6 +35,7 @@ local function unequipMultiplePets(petName, count)
         if pet.Name == petName and unequippedCount < count then  
             game:GetService("ReplicatedStorage").rEvents.equipPetEvent:FireServer("unequipPet", pet)  
             unequippedCount = unequippedCount + 1  
+            task.wait(0.1)  -- Short wait between unequips
         end  
     end
 end
@@ -81,7 +83,7 @@ local switchFastRebirth = OPtab:AddSwitch("Fast Rebirth (Combine With OP Auto Fa
 
                 task.wait(0.5)  -- Wait after rebirth
 
-                -- Unequip Tribal Overlords and equip Swift Overlords
+                -- Unequip Tribal Overlords and equip Swift Samurai
                 unequipMultiplePets("Tribal Overlord", 8)  -- Unequip 8 Tribal Overlords
                 task.wait(0.1)  -- Wait before equipping Swift Overlords
                 equipMultiplePets("Swift Samurai", 8)  -- Equip 8 Swift Samurai
