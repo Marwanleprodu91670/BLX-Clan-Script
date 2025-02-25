@@ -71,20 +71,20 @@ local switchFastRebirth = OPtab:AddSwitch("Fast Rebirth (Combine With OP Auto Fa
             local requiredStrength = 5000 + (rebirths.Value * 5000)
 
             if strength.Value >= requiredStrength then  
-                -- Unequip Tribal Overlord, then equip Swift Samurai
-                unequipMultiplePets("Tribal Overlord", 8)  -- Unequip 8 Tribal Overlords
-                task.wait(0.1)  -- Wait for 0.1 second before re-equipping
-                equipMultiplePets("Swift Samurai", 8)  -- Equip 8 Swift Samurais
+                -- Equip 8 Tribal Overlords
+                equipMultiplePets("Tribal Overlord", 8)  
+                task.wait(0.1)  -- Wait before rebirth
 
-                task.wait(1)  -- Wait 1 second before rebirth
-
-                -- Initiate rebirth process
+                -- Perform rebirth event
                 game:GetService("ReplicatedStorage"):WaitForChild("rEvents"):WaitForChild("rebirthRemote"):InvokeServer("rebirthRequest")  
 
-                task.wait(0.5)  -- Wait 0.5 seconds after rebirth
-                unequipMultiplePets("Swift Samurai", 8)  -- Unequip the Swift Samurai
-                task.wait(0.1)  -- Wait for 0.1 second before re-equipping
-                equipMultiplePets("Tribal Overlord", 8)  -- Equip the Tribal Overlord again
+                task.wait(0.5)  -- Wait after rebirth
+
+                -- Unequip Tribal Overlords and equip Swift Overlords
+                unequipMultiplePets("Tribal Overlord", 8)  -- Unequip 8 Tribal Overlords
+                task.wait(0.1)  -- Wait for 0.1 second before equipping Swift Overlords
+                equipMultiplePets("Swift Overlord", 8)  -- Equip 8 Swift Overlords
+                task.wait(0.1)  -- Wait to finish equipping Swift Overlords
             end  
             task.wait(1)  
         end  
