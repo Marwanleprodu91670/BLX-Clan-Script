@@ -71,6 +71,10 @@ local switchFastRebirth = OPtab:AddSwitch("Fast Rebirth (Combine With OP Auto Fa
             local requiredStrength = 5000 + (rebirths.Value * 5000)
 
             if strength.Value >= requiredStrength then  
+                -- Unequip 8 Swift Samurai first
+                unequipMultiplePets("Swift Samurai", 8)  
+                task.wait(0.1)  -- Wait before equipping Tribal Overlords
+
                 -- Equip 8 Tribal Overlords
                 equipMultiplePets("Tribal Overlord", 8)  
                 task.wait(0.1)  -- Wait before rebirth
