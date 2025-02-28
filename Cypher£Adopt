@@ -1,1 +1,359 @@
+local library = loadstring(game:HttpGet("https://raw.githubusercontent.com/Marwanleprodu91670/BLX-Clan-Script/refs/heads/main/Los%20Library", true))()
+
+local window = library:AddWindow("Nova Hub | Legends Of Speed (Rework)", {
+    main_color = Color3.fromRGB(41, 74, 122), -- Color
+    min_size = Vector2.new(250, 346), -- Size of the gui
+    can_resize = false, -- true or false
+})
+
+local Home = window:AddTab("Home")
+
+Home:AddLabel("Local Player")
+
+-- Create a textbox for SpeedPower
+Home:AddTextBox("SpeedPower", function(text)
+    _G.SpeedPower = tonumber(text)
+end)
+
+-- Create a toggle for applying SpeedPower
+Home:AddSwitch("Apply SpeedPower", function(bool)
+    if bool and _G.SpeedPower then
+        game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = _G.SpeedPower
+    end
+end)
+
+-- Create a textbox for JumpPower
+Home:AddTextBox("JumpPower", function(text)
+    _G.JumpPower = tonumber(text)
+end)
+
+-- Create a toggle for applying JumpPower
+Home:AddSwitch("Apply JumpPower", function(bool)
+    if bool and _G.JumpPower then
+        game.Players.LocalPlayer.Character.Humanoid.JumpPower = _G.JumpPower
+    end
+end)
+
+-- Create a textbox for Size
+Home:AddTextBox("Size", function(text)
+    _G.Size = tonumber(text)
+end)
+
+-- Create a toggle for applying Size
+Home:AddSwitch("Apply Size", function(bool)
+    if bool and _G.Size then
+        game.Players.LocalPlayer.Character:SetPrimaryPartCFrame(game.Players.LocalPlayer.Character.PrimaryPart.CFrame * CFrame.new(0, _G.Size, 0))
+    end
+end)
+
+-- Create a textbox for Gravity
+Home:AddTextBox("Gravity", function(text)
+    _G.Gravity = tonumber(text)
+end)
+
+-- Create a toggle for applying Gravity
+Home:AddSwitch("Apply Gravity", function(bool)
+    if bool and _G.Gravity then
+        game.Workspace.Gravity = _G.Gravity
+    end
+end)
+
+
+local AutoFarm = window:AddTab("Auto Farm")
+
+AutoFarm:AddLabel("Auto Farming")
+
+-- Define the first dropdown for Orb Type selection
+local orbDropdown = AutoFarm:AddDropdown("Orb Type", function(text)
+    if text == "Red Orb" then
+        _G.SelectOrb = "Red Orb"
+    elseif text == "Blue Orb" then
+        _G.SelectOrb = "Blue Orb"
+    elseif text == "Orange Orb" then
+        _G.SelectOrb = "Orange Orb"
+    elseif text == "Gem" then
+        _G.SelectOrb = "Gem"
+    elseif text == "Yellow Orb" then
+        _G.SelectOrb = "Yellow Orb"
+    elseif text == "Ethereal Orb" then
+        _G.SelectOrb = "Ethereal Orb"
+    end
+end)
+
+-- Add options to the Orb Type dropdown
+local redOrb = orbDropdown:Add("Red Orb")
+local blueOrb = orbDropdown:Add("Blue Orb")
+local orangeOrb = orbDropdown:Add("Orange Orb")
+local gem = orbDropdown:Add("Gem")
+local yellowOrb = orbDropdown:Add("Yellow Orb")
+local etherealOrb = orbDropdown:Add("Ethereal Orb")
+
+-- Define the second dropdown for Island selection
+local cityDropdown = AutoFarm:AddDropdown("Select Island", function(text)
+    if text == "City" then
+        _G.SelectCity = "City"
+    elseif text == "Snow City" then
+        _G.SelectCity = "Snow City"
+    elseif text == "Magma City" then
+        _G.SelectCity = "Magma City"
+    elseif text == "Jungle City" then
+        _G.SelectCity = "Jungle City"
+    elseif text == "Legends Highway" then
+        _G.SelectCity = "Legends Highway"
+    elseif text == "Space" then
+        _G.SelectCity = "Space"
+    elseif text == "Desert" then
+        _G.SelectCity = "Desert"
+    end
+end)
+
+-- Add options to the Island dropdown
+local city = cityDropdown:Add("City")
+local snowCity = cityDropdown:Add("Snow City")
+local magmaCity = cityDropdown:Add("Magma City")
+local jungleCity = cityDropdown:Add("Jungle City")
+local legendsHighway = cityDropdown:Add("Legends Highway")
+local space = cityDropdown:Add("Space")
+local desert = cityDropdown:Add("Desert")
+
+-- Define the toggle switch for AutoOrb functionality
+local switch = AutoFarm:AddSwitch("Auto Orb", function(bool)
+    _G.AutoOrbs = bool
+    if bool then
+        AutoOrb()  -- Start AutoOrb when the toggle is on
+    end
+end)
+
+-- Define the AutoOrb function
+function AutoOrb()
+    while _G.AutoOrbs do
+        local args = {
+            [1] = "collectOrb",
+            [2] = _G.SelectOrb,
+            [3] = _G.SelectCity
+        }
+        -- Trigger the event
+        game:GetService("ReplicatedStorage"):WaitForChild("rEvents"):WaitForChild("orbEvent"):FireServer(unpack(args))
+        wait(0.25)  -- Small delay before the next action
+    end
+end
+
+local autoHoopsToggle = AutoFarm:AddSwitch("Auto Hoops", function(bool)
+    local hoops = {}
+    
+    -- Save the original positions of the hoops
+    for _, part in pairs(workspace:GetChildren()) do
+        if part.Name == "Hoop" then
+            table.insert(hoops, {
+                part = part,
+                position = part.Position
+            })
+        end
+    end
+
+    -- When toggle is on, teleport all hoops to the player
+    if bool then
+        local player = game.Players.LocalPlayer
+        local char = player.Character
+        if char and char:FindFirstChild("HumanoidRootPart") then
+            local playerPosition = char.HumanoidRootPart.Position
+            for _, hoop in ipairs(hoops) do
+                hoop.part.CFrame = CFrame.new(playerPosition)  -- Teleport hoop to player
+            end
+        end
+    else
+        -- When toggle is off, return the hoops to their original positions
+        for _, hoop in ipairs(hoops) do
+            hoop.part.CFrame = CFrame.new(hoop.position)  -- Teleport hoop back to its original position
+        end
+    end
+end)
+
+
+local playerTab = window:AddTab("Player")
+
+-- Create the "Select Player" dropdown
+local playerDropdown = playerTab:AddDropdown("Select Player", function(playerName)
+    local player = game:GetService("Players"):FindFirstChild(playerName)
+    if player then
+        -- Update stats labels when player is selected
+        local steps = player:FindFirstChild("leaderstats"):FindFirstChild("Steps") and player.leaderstats.Steps.Value or 0
+        local rebirths = player:FindFirstChild("leaderstats"):FindFirstChild("Rebirths") and player.leaderstats.Rebirths.Value or 0
+        local hoops = player:FindFirstChild("leaderstats"):FindFirstChild("Hoops") and player.leaderstats.Hoops.Value or 0
+        local races = player:FindFirstChild("leaderstats"):FindFirstChild("Races") and player.leaderstats.Races.Value or 0
+        
+        -- Update the labels with the selected player's stats
+        stepsLabel:SetText("Steps: " .. steps)
+        rebirthsLabel:SetText("Rebirths: " .. rebirths)
+        hoopsLabel:SetText("Hoops: " .. hoops)
+        racesLabel:SetText("Races: " .. races)
+    end
+end)
+
+-- Populate the dropdown with the names of all players in the server
+local function updatePlayerList()
+    local playerList = {}
+    for _, player in pairs(game:GetService("Players"):GetPlayers()) do
+        table.insert(playerList, player.Name)
+    end
+    playerDropdown:SetOptions(playerList)
+end
+updatePlayerList()
+
+-- Create the "Spy Player" toggle
+local spyToggle = playerTab:AddSwitch("Spy Player", function(bool)
+    local selectedPlayer = game:GetService("Players"):FindFirstChild(playerDropdown:GetSelected())
+    if selectedPlayer and bool then
+        -- Camera follow player
+        local camera = game.Workspace.CurrentCamera
+        local character = selectedPlayer.Character
+        if character then
+            camera.CameraSubject = character.Humanoid
+            camera.CameraType = Enum.CameraType.Custom
+
+            -- Make sure camera follows the player even if they respawn
+            selectedPlayer.CharacterAdded:Connect(function(newCharacter)
+                camera.CameraSubject = newCharacter.Humanoid
+            end)
+        end
+    else
+        -- Revert back to player's camera when toggle is off
+        game.Workspace.CurrentCamera.CameraSubject = game.Players.LocalPlayer.Character.Humanoid
+        game.Workspace.CurrentCamera.CameraType = Enum.CameraType.Custom
+    end
+end)
+
+-- Create the Player Stats label section
+playerTab:AddLabel("Player Stats:")
+
+-- Create labels for stats (Steps, Rebirths, Hoops, Races)
+local stepsLabel = playerTab:AddLabel("Steps: 0")
+local rebirthsLabel = playerTab:AddLabel("Rebirths: 0")
+local hoopsLabel = playerTab:AddLabel("Hoops: 0")
+local racesLabel = playerTab:AddLabel("Races: 0")
+
+local racingTab = window:AddTab("Racing")
+
+-- Auto Fill Race Toggle
+local autoFillRaceToggle = racingTab:AddSwitch("Auto Fill Race", function(bool)
+    while bool do
+        local args = { [1] = "joinRace" }
+        game:GetService("ReplicatedStorage"):WaitForChild("rEvents"):WaitForChild("raceEvent"):FireServer(unpack(args))
+        wait(0.01) -- Execute every 0.01 seconds
+    end
+end)
+
+-- Auto Win Race Toggle
+local autoWinRaceToggle = racingTab:AddSwitch("Auto Win Race", function(bool)
+    local positions = {
+        CFrame.new(1686.07495, 36.3147125, -5946.63428, -0.984812617, 0, 0.173621148, 0, 1, 0, -0.173621148, 0, -0.984812617),
+        CFrame.new(48.3109131, 36.3147125, -8680.45312, -1, 0, 0, 0, 1, 0, 0, 0, -1),
+        CFrame.new(1001.33118, 36.3147125, -10986.2178, -0.996191859, 0, -0.0871884301, 0, 1, 0, 0.0871884301, 0, -0.996191859)
+    }
+    
+    local plr = game.Players.LocalPlayer
+    local char = plr.Character
+
+    while bool do
+        if char and char:FindFirstChild("HumanoidRootPart") then
+            for _, cframe in ipairs(positions) do
+                char.HumanoidRootPart.CFrame = cframe
+                wait(0.01) -- Adjust the wait time as needed
+            end
+        end
+        wait(0.01) -- Ensure a short delay between each loop
+    end
+end)
+
+local hatchingTab = window:AddTab("Hatching")
+
+-- Dropdown for selecting egg type
+local eggDropdown = hatchingTab:AddDropdown("Select Egg", function(text)
+    _G.selectEgg = text
+end)
+
+-- Add options to the Egg Dropdown
+local eggs = {
+    "Yellow Crystal", "Blue Crystal", "Red Crystal", "Lightning Crystal", "Inferno Crystal",
+    "Lava Crystal", "Snow Crystal", "Electro Legends Crystal", "Space Crystal", "Alien Crystal",
+    "Electro Crystal", "Desert Crystal", "Jungle Crystal"
+}
+for _, egg in ipairs(eggs) do
+    eggDropdown:Add(egg)
+end
+
+-- Auto Hatch Crystal Toggle
+local autoHatchToggle = hatchingTab:AddSwitch("Auto Hatch Crystal", function(bool)
+    while bool do
+        local args = { [1] = "openCrystal", [2] = _G.selectEgg }
+        game:GetService("ReplicatedStorage"):WaitForChild("rEvents"):WaitForChild("openCrystalRemote"):InvokeServer(unpack(args))
+        wait(0.01) -- Adjust the wait time as needed
+    end
+end)
+
+local rebirthingTab = window:AddTab("Rebirthing")
+
+-- Auto Rebirth (Infinitely) Toggle
+local autoRebirthToggle = rebirthingTab:AddSwitch("Auto Rebirth (Infinitely)", function(bool)
+    while bool do
+        local args = { [1] = "rebirthRequest" }
+        game:GetService("ReplicatedStorage"):WaitForChild("rEvents"):WaitForChild("rebirthEvent"):FireServer(unpack(args))
+        wait(0.001) -- Execute every 0.001 second
+    end
+end)
+
+-- Target Rebirth Textbox
+local targetRebirthTextbox = rebirthingTab:AddTextBox("Target Rebirth", function(text)
+    _G.targetRebirth = tonumber(text)
+end)
+
+-- Auto Target Rebirth Toggle
+local autoTargetRebirthToggle = rebirthingTab:AddSwitch("Auto Target Rebirth", function(bool)
+    while bool do
+        local player = game.Players.LocalPlayer
+        local rebirths = player.leaderstats and player.leaderstats.Rebirths and player.leaderstats.Rebirths.Value
+        if rebirths and rebirths < _G.targetRebirth then
+            local args = { [1] = "rebirthRequest" }
+            game:GetService("ReplicatedStorage"):WaitForChild("rEvents"):WaitForChild("rebirthEvent"):FireServer(unpack(args))
+        else
+            break
+        end
+        wait(0.001) -- Execute every 0.001 second
+    end
+end)
+
+local miscTab = window:AddTab("Misc")
+
+-- Anti Kick Toggle
+local antiKickToggle = miscTab:AddSwitch("Anti Kick", function(bool)
+    if bool then
+        game:GetService("Players").LocalPlayer.Idled:Connect(function()
+            -- Reset the idle timer to prevent being kicked
+            game:GetService("Players").LocalPlayer:Kick("Idle timeout prevented")
+        end)
+    end
+end)
+
+-- Label for Amount of Time Spent in Server
+local timeSpentLabel = miscTab:AddLabel("Amount Of Time Spent In Server:")
+
+-- Label for Weeks, Days, Hours, Minutes, Seconds
+local timeLabel = miscTab:AddLabel("Weeks: 0 Days: 0 Hours: 0 Minutes: 0 Seconds: 0")
+
+-- Time calculation function to update every second
+local startTime = tick() -- Start time at script initialization
+spawn(function()
+    while true do
+        wait(1)
+        local elapsed = tick() - startTime
+        local weeks = math.floor(elapsed / (60 * 60 * 24 * 7))
+        local days = math.floor((elapsed % (60 * 60 * 24 * 7)) / (60 * 60 * 24))
+        local hours = math.floor((elapsed % (60 * 60 * 24)) / (60 * 60))
+        local minutes = math.floor((elapsed % (60 * 60)) / 60)
+        local seconds = math.floor(elapsed % 60)
+
+        -- Update the time label
+        timeLabel:SetText(string.format("Weeks: %d Days: %d Hours: %d Minutes: %d Seconds: %d", weeks, days, hours, minutes, seconds))
+    end
+end)
 
