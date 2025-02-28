@@ -58,7 +58,6 @@ Home:AddSwitch("Apply Gravity", function(bool)
     end
 end)
 
-
 local AutoFarm = window:AddTab("Auto Farm")
 
 AutoFarm:AddLabel("Auto Farming")
@@ -169,7 +168,6 @@ local autoHoopsToggle = AutoFarm:AddSwitch("Auto Hoops", function(bool)
     end
 end)
 
-
 local playerTab = window:AddTab("Player")
 
 -- Create the "Select Player" dropdown
@@ -183,10 +181,10 @@ local playerDropdown = playerTab:AddDropdown("Select Player", function(playerNam
         local races = player:FindFirstChild("leaderstats"):FindFirstChild("Races") and player.leaderstats.Races.Value or 0
         
         -- Update the labels with the selected player's stats
-        stepsLabel:SetText("Steps: " .. steps)
-        rebirthsLabel:SetText("Rebirths: " .. rebirths)
-        hoopsLabel:SetText("Hoops: " .. hoops)
-        racesLabel:SetText("Races: " .. races)
+        stepsLabel:SetText("Steps: " .. abbreviateNumber(steps))
+        rebirthsLabel:SetText("Rebirths: " .. abbreviateNumber(rebirths))
+        hoopsLabel:SetText("Hoops: " .. abbreviateNumber(hoops))
+        racesLabel:SetText("Races: " .. abbreviateNumber(races))
     end
 end)
 
@@ -199,6 +197,23 @@ local function updatePlayerList()
     playerDropdown:SetOptions(playerList)
 end
 updatePlayerList()
+
+-- Function to abbreviate numbers
+function abbreviateNumber(num)
+    if num >= 1e12 then
+        return string.format("%.1f T", num / 1e12)
+    elseif num >= 1e9 then
+        return string.format("%.1f B", num / 1e9)
+    elseif num >= 1e6 then
+        return string.format("%.1f M", num / 1e6)
+    elseif num >= 1e3 then
+        return string.format("%.1f K", num / 1e3)
+    elseif num >= 1e2 then
+        return tostring(num)
+    else
+        return string.format("%d", num)
+    end
+end
 
 -- Create the "Spy Player" toggle
 local spyToggle = playerTab:AddSwitch("Spy Player", function(bool)
