@@ -1,7 +1,9 @@
-local Fluent = loadstring(game:HttpGet("https://raw.githubusercontent.com/Marwanleprodu91670/BLX-Clan-Script/refs/heads/main/Library"))()
+-- Load external libraries
+local Fluent = loadstring(game:HttpGet("https://raw.githubusercontent.com/AhmadV99/Main/refs/heads/main/Library/V4.lua"))()
 local SaveManager = loadstring(game:HttpGet("https://raw.githubusercontent.com/dawid-scripts/Fluent/master/Addons/SaveManager.lua"))()
 local InterfaceManager = loadstring(game:HttpGet("https://raw.githubusercontent.com/dawid-scripts/Fluent/master/Addons/InterfaceManager.lua"))()
 
+-- Create the main window for the UI
 local Window = Fluent:CreateWindow({
     Title = "Blxssed's Private Script" .. Fluent.Version,
     SubTitle = "by Maya",
@@ -12,13 +14,13 @@ local Window = Fluent:CreateWindow({
     MinimizeKey = Enum.KeyCode.LeftControl
 })
 
--- Tabs
+-- Define the tabs
 local Tabs = {
     FastTool = Window:AddTab({ Title = "Fast Tool", Icon = "" }),
-    
+    DisplaySettings = Window:AddTab({ Title = "Display Settings", Icon = "" })
 }
 
--- Auto Rep Toggle
+-- Auto Rep Toggle setup
 local AutoRepToggle = Tabs.FastTool:AddToggle("Auto Rep", {
     Title = "Auto Rep",
     Default = false
@@ -26,25 +28,25 @@ local AutoRepToggle = Tabs.FastTool:AddToggle("Auto Rep", {
 
 AutoRepToggle:OnChanged(function(bool)
     getgenv().autoRep = bool
-    if not bool then return end
-
-    -- Use a single loop to handle the reps with rate limiting
-    task.spawn(function()
-        while getgenv().autoRep do
-            game:GetService("Players").LocalPlayer:WaitForChild("muscleEvent"):FireServer("rep")
-            task.wait(0.01)  -- Game's rate limit
-        end
-    end)
+    if bool then
+        -- Start the rep function when toggle is enabled
+        task.spawn(function()
+            while getgenv().autoRep do
+                game:GetService("Players").LocalPlayer:WaitForChild("muscleEvent"):FireServer("rep")
+                task.wait(0.01)  -- Wait to respect game's rate limit
+            end
+        end)
+    end
 end)
 
--- Hide All Frame Toggle
-local HideAllFrameToggle = Tabs.DisplaySettings:AddToggle("Hide All Frame", {
+-- Hide All Frame Toggle setup
+local HideAllFrameToggle = Tabs.DisplaySettings:AddToggle("Hide All Frames", {
     Title = "Hide All Frames",
     Default = false
 })
 
 HideAllFrameToggle:OnChanged(function(bool)
-    -- Hide or show the specified frames
+    -- Hide or show frames based on the toggle state
     local framesToHide = {"strengthFrame", "durabilityFrame", "agilityFrame"}
     for _, frameName in ipairs(framesToHide) do
         local frame = game:GetService("ReplicatedStorage"):FindFirstChild(frameName)
