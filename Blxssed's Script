@@ -15,5 +15,196 @@ local Window = Fluent:CreateWindow({
 --Fluent provides Lucide Icons https://lucide.dev/icons/ for the tabs, icons are optional
 local Tabs = {
     Home = Window:AddTab({ Title = "Home", Icon = "Scan-Face" }),
+    OpFarming = Window:AddTab({ Title = "Op Farming", Icon = "" }),
     Settings = Window:AddTab({ Title = "Settings", Icon = "settings" })
 }
+
+Tabs.Home:AddParagraph({
+        Title = "Welcome",
+        Content = "Discord Server:"
+    })
+
+Tabs.Home:AddButton({
+    Title = "Copy Discord Server Link",
+    Description = "",
+    Callback = function()
+        setclipboard("https://discord.gg/TVqdwWur") -- Copies the link to clipboard
+    end
+})
+
+Tabs.Home:AddParagraph({
+        Title = "Local Player",
+        Content = ":"
+    })
+
+-- SpeedPower Slider
+local SpeedPower = Tabs.Home:AddSlider("SpeedPower", {
+    Title = "SpeedPower",
+    Description = "",
+    Default = 16,
+    Min = 0,
+    Max = 200,
+    Rounding = 0,
+    Callback = function(Value)
+        game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = Value
+    end
+})
+
+SpeedPower:OnChanged(function(Value)
+    game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = Value
+end)
+
+SpeedPower:SetValue(16)
+
+-- JumpPower Slider
+local JumpPower = Tabs.Home:AddSlider("JumpPower", {
+    Title = "JumpPower",
+    Description = "",
+    Default = 50,
+    Min = 0,
+    Max = 300,
+    Rounding = 0,
+    Callback = function(Value)
+        game.Players.LocalPlayer.Character.Humanoid.JumpPower = Value
+    end
+})
+
+JumpPower:OnChanged(function(Value)
+    game.Players.LocalPlayer.Character.Humanoid.JumpPower = Value
+end)
+
+JumpPower:SetValue(50)
+
+-- Size Slider
+local Size = Tabs.Home:AddSlider("Size", {
+    Title = "Size",
+    Description = "",
+    Default = 1,
+    Min = 1,
+    Max = 100,
+    Rounding = 1,
+    Callback = function(Value)
+        game.Players.LocalPlayer.Character.HumanoidRootPart.Size = Vector3.new(Value, Value, Value)
+    end
+})
+
+Size:OnChanged(function(Value)
+    game.Players.LocalPlayer.Character.HumanoidRootPart.Size = Vector3.new(Value, Value, Value)
+end)
+
+Size:SetValue(1)
+
+Tabs.OpFarming:AddParagraph({
+        Title = "Op Farming Tab",
+        Content = "Hello, in this tab there are many OP functions,
+make sure to read the description of each toggle to know what to do."
+    })
+
+local OP_AutoFarm = Tabs.OpFarming:AddToggle("OP_AutoFarm", {
+    Title = "OP Auto Farm",
+    Description = "Equip Swift Samurai Before using",
+    Default = false,
+    Callback = function(State)
+        getgenv().autoFarmPlus = State
+        if not getgenv().autoFarmPlus then return end
+
+        task.spawn(function()
+            for i = 1, 2 do
+                task.spawn(function()
+                    for j = 1, 4 do
+                        task.spawn(function()
+                            for k = 1, 200 do
+                                task.spawn(function()
+                                    while getgenv().autoFarmPlus do
+                                        game:GetService("Players").LocalPlayer:WaitForChild("muscleEvent"):FireServer("rep")
+                                        task.wait(0.01)
+                                    end
+                                end)
+                            end
+                        end)
+                    end
+                end)
+            end
+        end)
+    end
+})
+
+local OP_PackFarmingRebirth = Tabs.OpFarming:AddToggle("PackFarmingRebirth", {
+    Title = "Pack Farming Rebirth",
+    Description = "Auto Rebirth With Packs",
+    Default = false,
+    Callback = function(State)
+        getgenv().PackFarmingRebirth = State
+        if not getgenv().PackFarmingRebirth then return end
+
+        task.spawn(function()
+            while getgenv().PackFarmingRebirth do
+                local player = game:GetService("Players").LocalPlayer
+                local petEvent = game:GetService("ReplicatedStorage").rEvents.equipPetEvent
+                local rebirthEvent = game:GetService("ReplicatedStorage"):WaitForChild("rEvents"):WaitForChild("rebirthRemote")
+
+                local function equipPets(petName)
+                    local equipped = 0
+                    for _, pet in pairs(player.petsFolder.Unique:GetChildren()) do
+                        if pet.Name == petName and equipped < 8 then
+                            task.spawn(function()
+                                petEvent:FireServer("equipPet", pet)
+                            end)
+                            equipped = equipped + 1
+                            task.wait(0.01)
+                        end
+                    end
+                end
+
+                local function unequipPets(petName)
+                    local unequipped = 0
+                    for _, pet in pairs(player.petsFolder.Unique:GetChildren()) do
+                        if pet.Name == petName and unequipped < 8 then
+                            task.spawn(function()
+                                petEvent:FireServer("unequipPet", pet)
+                            end)
+                            unequipped = unequipped + 1
+                            task.wait(0.01)
+                        end
+                    end
+                end
+
+                -- Equip 8 different Swift Samurai pets
+                equipPets("Swift Samurai")
+
+                -- Wait 2 seconds
+                task.wait(2)
+
+                -- Unequip 8 different Swift Samurai pets
+                unequipPets("Swift Samurai")
+
+                -- Equip 8 different Tribal Overlord pets
+                equipPets("Tribal Overlord")
+
+                -- Wait 5 seconds
+                task.wait(5)
+
+                -- Perform rebirth
+                local args = {} -- Add correct args if needed
+                rebirthEvent:InvokeServer(unpack(args))
+
+                -- Immediately equip 8 different Swift Samurai pets again
+                equipPets("Swift Samurai")
+            end
+        end)
+    end
+})
+
+local HideFrameToggle = Tabs.Main:AddToggle("HideFrame", {
+    Title = "Hide Frame",
+    Description = "Hide Strength, Durability, and Agility Frame",
+    Default = false,
+    Callback = function(State)
+        for _, frameName in ipairs({"strengthFrame", "durabilityFrame", "agilityFrame"}) do
+            local frame = game:GetService("Players").LocalPlayer.PlayerGui:FindFirstChild(frameName)
+            if frame then
+                frame.Visible = not State
+            end
+        end
+    end
+})
