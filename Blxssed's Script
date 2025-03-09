@@ -1,0 +1,55 @@
+local Fluent = loadstring(game:HttpGet("https://pastebin.com/raw/2PcnPVP2"))()
+local SaveManager = loadstring(game:HttpGet("https://raw.githubusercontent.com/dawid-scripts/Fluent/master/Addons/SaveManager.lua"))()
+local InterfaceManager = loadstring(game:HttpGet("https://raw.githubusercontent.com/dawid-scripts/Fluent/master/Addons/InterfaceManager.lua"))()
+
+local Window = Fluent:CreateWindow({
+    Title = "Blxssed's Private Script" .. Fluent.Version,
+    SubTitle = "by Maya",
+    TabWidth = 160,
+    Size = UDim2.fromOffset(580, 460),
+    Acrylic = true,
+    Theme = "Blxssed",
+    MinimizeKey = Enum.KeyCode.LeftControl
+})
+
+-- Tabs
+local Tabs = {
+    FastTool = Window:AddTab({ Title = "Fast Tool", Icon = "" }),
+    DisplaySettings = Window:AddTab({ Title = "Display Settings", Icon = "" })
+}
+
+-- Auto Rep Toggle
+local AutoRepToggle = Tabs.FastTool:AddToggle("Auto Rep", {
+    Title = "Auto Rep",
+    Default = false
+})
+
+AutoRepToggle:OnChanged(function(bool)
+    getgenv().autoRep = bool
+    if not bool then return end
+
+    -- Use a single loop to handle the reps with rate limiting
+    task.spawn(function()
+        while getgenv().autoRep do
+            game:GetService("Players").LocalPlayer:WaitForChild("muscleEvent"):FireServer("rep")
+            task.wait(0.01)  -- Game's rate limit
+        end
+    end)
+end)
+
+-- Hide All Frame Toggle
+local HideAllFrameToggle = Tabs.DisplaySettings:AddToggle("Hide All Frame", {
+    Title = "Hide All Frames",
+    Default = false
+})
+
+HideAllFrameToggle:OnChanged(function(bool)
+    -- Hide or show the specified frames
+    local framesToHide = {"strengthFrame", "durabilityFrame", "agilityFrame"}
+    for _, frameName in ipairs(framesToHide) do
+        local frame = game:GetService("ReplicatedStorage"):FindFirstChild(frameName)
+        if frame then
+            frame.Visible = not bool
+        end
+    end
+end)
