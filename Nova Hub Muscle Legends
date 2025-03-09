@@ -29,7 +29,6 @@ Tabs.Home:AddParagraph({
 
 Tabs.Home:AddButton({
     Title = "Copy Discord Server Link",
-    Description = "",
     Callback = function()
         setclipboard("https://discord.gg/TVqdwWur")
     end
@@ -46,17 +45,11 @@ local WalkSpeedInput = Tabs.Home:AddInput("WalkSpeed", {
     Default = "16",
     Placeholder = "Enter WalkSpeed",
     Numeric = true,
-    Finished = true,
-    Callback = function(Value)
-    end
+    Finished = true
 })
-
-WalkSpeedInput:OnChanged(function()
-end)
 
 Tabs.Home:AddButton({
     Title = "Apply WalkSpeed",
-    Description = "Apply the WalkSpeed",
     Callback = function()
         local walkSpeedValue = tonumber(WalkSpeedInput.Value)
         if walkSpeedValue then
@@ -71,17 +64,11 @@ local JumpPowerInput = Tabs.Home:AddInput("JumpPower", {
     Default = "50",
     Placeholder = "Enter JumpPower",
     Numeric = true,
-    Finished = true,
-    Callback = function(Value)
-    end
+    Finished = true
 })
-
-JumpPowerInput:OnChanged(function()
-end)
 
 Tabs.Home:AddButton({
     Title = "Apply JumpPower",
-    Description = "Apply the JumpPower",
     Callback = function()
         local jumpPowerValue = tonumber(JumpPowerInput.Value)
         if jumpPowerValue then
@@ -96,17 +83,11 @@ local SizeInput = Tabs.Home:AddInput("Size", {
     Default = "1",
     Placeholder = "Enter Size",
     Numeric = true,
-    Finished = true,
-    Callback = function(Value)
-    end
+    Finished = true
 })
-
-SizeInput:OnChanged(function()
-end)
 
 Tabs.Home:AddButton({
     Title = "Apply Size",
-    Description = "Apply the Size",
     Callback = function()
         local sizeValue = tonumber(SizeInput.Value)
         if sizeValue then
@@ -246,13 +227,8 @@ local RebirthTargetTextbox = Tabs.Rebirth:AddInput("RebirthTarget", {
     Default = "0",
     Placeholder = "Enter Target Rebirths",
     Numeric = true,
-    Finished = true,
-    Callback = function(Value)
-    end
+    Finished = true
 })
-
-RebirthTargetTextbox:OnChanged(function()
-end)
 
 -- Rebirth Until Target Toggle
 Tabs.Rebirth:AddToggle({
