@@ -1,1 +1,19 @@
+local Fluent = loadstring(game:HttpGet("https://raw.githubusercontent.com/Marwanleprodu91670/BLX-Clan-Script/refs/heads/main/Library"))()
+local SaveManager = loadstring(game:HttpGet("https://raw.githubusercontent.com/dawid-scripts/Fluent/master/Addons/SaveManager.lua"))()
+local InterfaceManager = loadstring(game:HttpGet("https://raw.githubusercontent.com/dawid-scripts/Fluent/master/Addons/InterfaceManager.lua"))()
 
+local Window = Fluent:CreateWindow({
+    Title = "Private Script | By Encrypted " .. Fluent.Version,
+    SubTitle = "by Encrypted",
+    TabWidth = 160,
+    Size = UDim2.fromOffset(580, 460),
+    Acrylic = true, -- The blur may be detectable, setting this to false disables blur entirely
+    Theme = "Private",
+    MinimizeKey = Enum.KeyCode.LeftControl -- Used when theres no MinimizeKeybind
+})
+
+--Fluent provides Lucide Icons https://lucide.dev/icons/ for the tabs, icons are optional
+local Tabs = {
+    Home = Window:AddTab({ Title = "Home", Icon = "Scan-Face" }),
+    Settings = Window:AddTab({ Title = "Settings", Icon = "settings" })
+}
