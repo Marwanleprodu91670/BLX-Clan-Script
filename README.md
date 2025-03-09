@@ -46,9 +46,9 @@ local switchAutoFarmPlus = OPtab:AddSwitch("Auto Farm+++", function(bool)
     if not getgenv().autoFarmPlus then return end
 
     task.spawn(function()
-        for i = 1, 10 do
+        for i = 1, 5 do
             task.spawn(function()
-                for j = 1, 10 do
+                for j = 1, 5 do
                     task.spawn(function()
                         for k = 1, 200 do
                             task.spawn(function()
