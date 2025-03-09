@@ -31,55 +31,55 @@ local ProtectGui = protectgui or (syn and syn.protect_gui) or function(f) end
 
 local Themes = {
 	Names = {
-		"SpeedHubX"
+		"Private"
 	},
-	SpeedHubX = {
-		Name = "SpeedHubX",
-	Accent = Color3.fromRGB(255, 0, 0),
+	Private = {
+		Name = "Private",
+		Accent = Color3.fromRGB(0, 0, 0),  -- Black Accent
 
-		AcrylicMain = Color3.fromRGB(20, 20, 20),
-		AcrylicBorder = Color3.fromRGB(40, 40, 40), 
-		AcrylicGradient = ColorSequence.new(Color3.fromRGB(30, 30, 30), Color3.fromRGB(10, 10, 10)),
+		AcrylicMain = Color3.fromRGB(0, 0, 0),  -- Black main background
+		AcrylicBorder = Color3.fromRGB(255, 255, 255),  -- White border
+		AcrylicGradient = ColorSequence.new(Color3.fromRGB(0, 0, 0), Color3.fromRGB(255, 255, 255)),  -- Black to White gradient
 		AcrylicNoise = 0.8,
-	
-		TitleBarLine = Color3.fromRGB(90, 90, 90),
-		Tab = Color3.fromRGB(180, 0, 0),
-	
-		Element = Color3.fromRGB(180, 0, 0),
-		ElementBorder = Color3.fromRGB(50, 50, 50),
-		InElementBorder = Color3.fromRGB(80, 80, 80),
+
+		TitleBarLine = Color3.fromRGB(255, 255, 255),  -- White title bar line
+		Tab = Color3.fromRGB(255, 255, 255),  -- White tab
+
+		Element = Color3.fromRGB(255, 255, 255),  -- White element
+		ElementBorder = Color3.fromRGB(50, 50, 50),  -- Dark grey border
+		InElementBorder = Color3.fromRGB(80, 80, 80),  -- Slightly lighter dark grey border
 		ElementTransparency = 0.75,
-	
-		ToggleSlider = Color3.fromRGB(200, 0, 0),
-		ToggleToggled = Color3.fromRGB(255, 255, 255),
-	
-		SliderRail = Color3.fromRGB(160, 160, 160),
-	
-		DropdownFrame = Color3.fromRGB(30, 30, 30),
-		DropdownHolder = Color3.fromRGB(50, 50, 50),
-		DropdownBorder = Color3.fromRGB(180, 0, 0),
-		DropdownOption = Color3.fromRGB(220, 0, 0),
-	
-		Keybind = Color3.fromRGB(160, 0, 0),
-	
-		Input = Color3.fromRGB(180, 180, 180),
-		InputFocused = Color3.fromRGB(0, 0, 0),
-		InputIndicator = Color3.fromRGB(255, 50, 50),
-	
-		Dialog = Color3.fromRGB(30, 30, 30),
-		DialogHolder = Color3.fromRGB(45, 45, 45),
-		DialogHolderLine = Color3.fromRGB(180, 0, 0),
-		DialogButton = Color3.fromRGB(30, 30, 30),
-		DialogButtonBorder = Color3.fromRGB(255, 0, 0),
-		DialogBorder = Color3.fromRGB(70, 70, 70),
-		DialogInput = Color3.fromRGB(40, 40, 40),
-		DialogInputLine = Color3.fromRGB(220, 0, 0),
-	
-		Text = Color3.fromRGB(255, 255, 255),
-		SubText = Color3.fromRGB(170, 170, 170),
-		Hover = Color3.fromRGB(220, 0, 0),
+
+		ToggleSlider = Color3.fromRGB(255, 255, 255),  -- White slider
+		ToggleToggled = Color3.fromRGB(0, 0, 0),  -- Black when toggled
+
+		SliderRail = Color3.fromRGB(160, 160, 160),  -- Light grey rail
+
+		DropdownFrame = Color3.fromRGB(0, 0, 0),  -- Black dropdown frame
+		DropdownHolder = Color3.fromRGB(50, 50, 50),  -- Dark grey dropdown holder
+		DropdownBorder = Color3.fromRGB(255, 255, 255),  -- White dropdown border
+		DropdownOption = Color3.fromRGB(255, 255, 255),  -- White dropdown option
+
+		Keybind = Color3.fromRGB(255, 255, 255),  -- White keybind
+
+		Input = Color3.fromRGB(255, 255, 255),  -- White input box
+		InputFocused = Color3.fromRGB(0, 0, 0),  -- Black when focused
+		InputIndicator = Color3.fromRGB(255, 50, 50),  -- Red indicator
+
+		Dialog = Color3.fromRGB(0, 0, 0),  -- Black dialog
+		DialogHolder = Color3.fromRGB(45, 45, 45),  -- Dark grey dialog holder
+		DialogHolderLine = Color3.fromRGB(255, 255, 255),  -- White line
+		DialogButton = Color3.fromRGB(0, 0, 0),  -- Black dialog button
+		DialogButtonBorder = Color3.fromRGB(255, 255, 255),  -- White button border
+		DialogBorder = Color3.fromRGB(255, 255, 255),  -- White border
+		DialogInput = Color3.fromRGB(50, 50, 50),  -- Dark grey dialog input
+		DialogInputLine = Color3.fromRGB(255, 255, 255),  -- White input line
+
+		Text = Color3.fromRGB(255, 255, 255),  -- White text
+		SubText = Color3.fromRGB(170, 170, 170),  -- Light grey text
+		Hover = Color3.fromRGB(255, 255, 255),  -- White hover effect
 		HoverChange = 0.08,
-	}    
+	}
 }
 
 local Library = {
@@ -135,7 +135,7 @@ local function CloseOpen()
 	Close_ImageButton.BorderColor3 = Color3.fromRGB(255, 0, 0)
 	Close_ImageButton.Position = UDim2.new(0.1021, 0, 0.0743, 0)
 	Close_ImageButton.Size = UDim2.new(0, 59, 0, 49)
-	Close_ImageButton.Image = "rbxassetid://81912552893782"
+	Close_ImageButton.Image = "rbxassetid://95781152823613"
 	Close_ImageButton.Visible = false
 
 	UICorner.Name = "MainCorner"
