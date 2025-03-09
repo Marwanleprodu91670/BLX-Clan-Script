@@ -1,4 +1,4 @@
-local Fluent = loadstring(game:HttpGet("https://pastebin.com/raw/2PcnPVP2"))()
+local Fluent = loadstring(game:HttpGet("https://raw.githubusercontent.com/Marwanleprodu91670/BLX-Clan-Script/refs/heads/main/Library"))()
 local SaveManager = loadstring(game:HttpGet("https://raw.githubusercontent.com/dawid-scripts/Fluent/master/Addons/SaveManager.lua"))()
 local InterfaceManager = loadstring(game:HttpGet("https://raw.githubusercontent.com/dawid-scripts/Fluent/master/Addons/InterfaceManager.lua"))()
 
@@ -15,7 +15,7 @@ local Window = Fluent:CreateWindow({
 -- Tabs
 local Tabs = {
     FastTool = Window:AddTab({ Title = "Fast Tool", Icon = "" }),
-    DisplaySettings = Window:AddTab({ Title = "Display Settings", Icon = "" })
+    
 }
 
 -- Auto Rep Toggle
