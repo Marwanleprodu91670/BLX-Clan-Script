@@ -65,6 +65,20 @@ local switchAutoFarmPlus = OPtab:AddSwitch("Auto Farm+++", function(bool)
     end)
 end)
 
+local autoFarmFromLucky = OPThings:AddToggle("Auto Farm From Lucky", false, function(state)
+    getgenv().autoFarmFromLucky = state
+    if state then
+        for i = 1, 20 do
+            task.spawn(function()
+                while getgenv().autoFarmFromLucky do
+                    game:GetService("Players").LocalPlayer:WaitForChild("muscleEvent"):FireServer("rep")
+                    task.wait(0.01)
+                end
+            end)
+        end
+    end
+end)
+
 -- Hide Frame Toggle
 local switchHideFrame = OPtab:AddSwitch("Hide Frame", function(bool)
     for _, frameName in ipairs({"strengthFrame", "durabilityFrame", "agilityFrame"}) do
