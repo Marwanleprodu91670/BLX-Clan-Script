@@ -1,25 +1,25 @@
 local Fluent = loadstring(game:HttpGet("https://raw.githubusercontent.com/Marwanleprodu91670/Nova-Hub/refs/heads/main/Library%202"))()
 local SaveManager = loadstring(game:HttpGet("https://raw.githubusercontent.com/dawid-scripts/Fluent/master/Addons/SaveManager.lua"))()
 local InterfaceManager = loadstring(game:HttpGet("https://raw.githubusercontent.com/dawid-scripts/Fluent/master/Addons/InterfaceManager.lua"))()
- 
+
 local Window = Fluent:CreateWindow({
     Title = "Nova Hub Rework  |  Muscle Legends" .. Fluent.Version,
     SubTitle = "by Encrypted",
     TabWidth = 160,
     Size = UDim2.fromOffset(580, 460),
-    Acrylic = true, -- The blur may be detectable, setting this to false disables blur entirely
+    Acrylic = true,
     Theme = "Private",
-    MinimizeKey = Enum.KeyCode.LeftControl -- Used when theres no MinimizeKeybind
+    MinimizeKey = Enum.KeyCode.LeftControl
 })
- 
+
 local Tabs = {
-    Home = Window:AddTab({ Title = "Home", Icon = "Home" }),
+    Home = Window:AddTab({ Title = "Home", Icon = "scan-face" }),
     AutoFarm = Window:AddTab({ Title = "Auto Farm", Icon = "zap" }),
     Rebirth = Window:AddTab({ Title = "Rebirth", Icon = "rotate-ccw" }),
     Stats = Window:AddTab({ Title = "Stats", Icon = "newspaper" }),
     AutoKill = Window:AddTab({ Title = "Auto Kill", Icon = "sword" }),
     Settings = Window:AddTab({ Title = "Settings", Icon = "settings" })
-}
+})
 
 -- Home Tab
 Tabs.Home:AddParagraph({
@@ -31,7 +31,7 @@ Tabs.Home:AddButton({
     Title = "Copy Discord Server Link",
     Description = "",
     Callback = function()
-        setclipboard("https://discord.gg/TVqdwWur") -- Copies the link to clipboard
+        setclipboard("https://discord.gg/TVqdwWur")
     end
 })
 
@@ -43,10 +43,10 @@ Tabs.Home:AddParagraph({
 -- WalkSpeed Textbox and Apply Button
 local WalkSpeedInput = Tabs.Home:AddInput("WalkSpeed", {
     Title = "WalkSpeed",
-    Default = "16", -- Default value for WalkSpeed
+    Default = "16",
     Placeholder = "Enter WalkSpeed",
-    Numeric = true, -- Only allows numbers
-    Finished = true, -- Calls callback when you press enter
+    Numeric = true,
+    Finished = true,
     Callback = function(Value)
     end
 })
@@ -68,10 +68,10 @@ Tabs.Home:AddButton({
 -- JumpPower Textbox and Apply Button
 local JumpPowerInput = Tabs.Home:AddInput("JumpPower", {
     Title = "JumpPower",
-    Default = "50", -- Default value for JumpPower
+    Default = "50",
     Placeholder = "Enter JumpPower",
-    Numeric = true, -- Only allows numbers
-    Finished = true, -- Calls callback when you press enter
+    Numeric = true,
+    Finished = true,
     Callback = function(Value)
     end
 })
@@ -93,10 +93,10 @@ Tabs.Home:AddButton({
 -- Size Textbox and Apply Button
 local SizeInput = Tabs.Home:AddInput("Size", {
     Title = "Size",
-    Default = "1", -- Default value for Size
+    Default = "1",
     Placeholder = "Enter Size",
-    Numeric = true, -- Only allows numbers
-    Finished = true, -- Calls callback when you press enter
+    Numeric = true,
+    Finished = true,
     Callback = function(Value)
     end
 })
@@ -121,6 +121,7 @@ Tabs.AutoFarm:AddParagraph({
     Content = ""
 })
 
+-- Auto Lift Toggle
 local AutoLiftToggle = Tabs.AutoFarm:AddToggle({
     Title = "Auto Lift",
     Description = "Automatically performs reps",
@@ -128,9 +129,11 @@ local AutoLiftToggle = Tabs.AutoFarm:AddToggle({
 })
 
 AutoLiftToggle:OnChanged(function(State)
-    while State do
-        game:GetService("Players").LocalPlayer:WaitForChild("muscleEvent"):FireServer("rep")
-        task.wait(0.01)
+    if State then
+        while AutoLiftToggle.Enabled do
+            game:GetService("Players").LocalPlayer:WaitForChild("muscleEvent"):FireServer("rep")
+            task.wait(0.01)
+        end
     end
 end)
 
@@ -283,7 +286,7 @@ Tabs.Rebirth:AddToggle({
 -- Update Rebirth Stats
 game.Players.LocalPlayer.leaderstats.Rebirths.Changed:Connect(function()
     local actualRebirths = game.Players.LocalPlayer.leaderstats.Rebirths.Value
-    local rebirthsGained = actualRebirths -- We track actual rebirths, but you can modify this to track a server-wide count
+    local rebirthsGained = actualRebirths
     local rebirthStatsText = "Actual Rebirths: " .. actualRebirths .. "\nRebirths Gained In Server: " .. rebirthsGained
     Tabs.Rebirth:GetParagraph("Rebirth Stats"):SetDesc(rebirthStatsText)
 end)
