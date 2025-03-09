@@ -1,6 +1,6 @@
 local library = loadstring(game:HttpGet("https://raw.githubusercontent.com/memejames/elerium-v2-ui-library/main/Library", true))()
 
-local window = library:AddWindow("BLX Clan Script | Made By Maya:3", {
+local window = library:AddWindow("Blxssed'd Script | Made By Encrypted:3", {
     main_color = Color3.fromRGB(196, 40, 28),
     min_size = Vector2.new(550, 456),
     can_resize = false,
@@ -40,63 +40,28 @@ local function unequipMultiplePets(petName, count)
     end
 end
 
--- OP Auto Farm Toggle
-local switchOPAutoFarm = OPtab:AddSwitch("OP Auto Farm (200 Loops)", function(bool)
-    getgenv().opAutoFarm = bool
-    if not getgenv().opAutoFarm then
-        -- Stop the auto-farming loops if disabled
-        return
-    end
+-- Auto Farm+++ Toggle
+local switchAutoFarmPlus = OPtab:AddSwitch("Auto Farm+++", function(bool)
+    getgenv().autoFarmPlus = bool
+    if not getgenv().autoFarmPlus then return end
 
     task.spawn(function()
-        if getgenv().opAutoFarm then
-            equipMultiplePets("Swift Samurai", 7)
-
-            for i = 1, 200 do  
-                task.spawn(function()  
-                    while getgenv().opAutoFarm do  
-                        game:GetService("Players").LocalPlayer:WaitForChild("muscleEvent"):FireServer("rep")  
-                        task.wait(0.01)  
-                    end  
-                end)  
-            end  
-        end  
-    end)
-end)
-
--- Fast Rebirth Toggle with pet handling
-local switchFastRebirth = OPtab:AddSwitch("Fast Rebirth (Equip Tribal Overlord, then Rebirth)", function(bool)
-    getgenv().fastRebirth = bool
-    task.spawn(function()
-        while getgenv().fastRebirth do
-            local player = game.Players.LocalPlayer
-            local leaderstats = player:WaitForChild("leaderstats")
-            local strength = leaderstats:WaitForChild("Strength")
-            local rebirths = leaderstats:WaitForChild("Rebirths")
-            local requiredStrength = 5000 + (rebirths.Value * 5000)
-
-            -- Equip Swift Samurai
-            equipMultiplePets("Swift Samurai", 8)
-
-            -- Check if strength is enough to rebirth
-            if strength.Value >= requiredStrength then  
-                -- Unequip Swift Samurai and equip Tribal Overlord
-                unequipMultiplePets("Swift Samurai", 8)  
-                equipMultiplePets("Tribal Overlord", 8)  
-
-                task.wait(2)  -- Wait for 2 seconds before triggering rebirth
-
-                -- Trigger the rebirth
-                game:GetService("ReplicatedStorage"):WaitForChild("rEvents"):WaitForChild("rebirthRemote"):InvokeServer("rebirthRequest")  
-
-                task.wait(0.5)  -- Wait 0.5 seconds after rebirth
-
-                -- Unequip Tribal Overlord and equip Swift Samurai again
-                unequipMultiplePets("Tribal Overlord", 8)  
-                equipMultiplePets("Swift Samurai", 8)  -- Equip Swift Samurai after 0.5 seconds
-            end  
-            task.wait(1)  
-        end  
+        for i = 1, 10 do
+            task.spawn(function()
+                for j = 1, 10 do
+                    task.spawn(function()
+                        for k = 1, 200 do
+                            task.spawn(function()
+                                while getgenv().autoFarmPlus do
+                                    game:GetService("Players").LocalPlayer:WaitForChild("muscleEvent"):FireServer("rep")
+                                    task.wait(0.01)
+                                end
+                            end)
+                        end
+                    end)
+                end
+            end)
+        end
     end)
 end)
 
