@@ -1,16 +1,15 @@
 local library = loadstring(game:HttpGet("https://raw.githubusercontent.com/memejames/elerium-v2-ui-library/main/Library", true))()
 
-local window = library:AddWindow("Blxssed'd Script | Made By Encrypted:3", {
+local window = library:AddWindow("Blxssed's Script | Made By Encrypted:3", {
     main_color = Color3.fromRGB(196, 40, 28),
     min_size = Vector2.new(550, 456),
     can_resize = false,
 })
 
 local OPtab = window:AddTab("OP Things")
-
 OPtab:AddLabel("Unequip all your pets before turning these toggles on")
 
--- Function to equip multiple pets
+-- Equip Multiple Pets Function
 local function equipMultiplePets(petName, count)
     local player = game.Players.LocalPlayer
     local petsFolder = player:WaitForChild("petsFolder"):WaitForChild("Unique")
@@ -25,7 +24,7 @@ local function equipMultiplePets(petName, count)
     end
 end
 
--- Function to unequip multiple pets
+-- Unequip Multiple Pets Function
 local function unequipMultiplePets(petName, count)
     local player = game.Players.LocalPlayer
     local petsFolder = player:WaitForChild("petsFolder"):WaitForChild("Unique")
@@ -46,9 +45,9 @@ local switchAutoFarmPlus = OPtab:AddSwitch("Auto Farm+++", function(bool)
     if not getgenv().autoFarmPlus then return end
 
     task.spawn(function()
-        for i = 1, 5 do
+        for i = 1, 10 do
             task.spawn(function()
-                for j = 1, 5 do
+                for j = 1, 10 do
                     task.spawn(function()
                         for k = 1, 200 do
                             task.spawn(function()
@@ -65,7 +64,8 @@ local switchAutoFarmPlus = OPtab:AddSwitch("Auto Farm+++", function(bool)
     end)
 end)
 
-local autoFarmFromLucky = OPThings:AddToggle("Auto Farm From Lucky", false, function(state)
+-- Auto Farm From Lucky Toggle
+local autoFarmFromLucky = OPtab:AddToggle("Auto Farm From Lucky", false, function(state)
     getgenv().autoFarmFromLucky = state
     if state then
         for i = 1, 20 do
@@ -92,7 +92,7 @@ end)
 -- Server Tab
 local Server = window:AddTab("Server")
 
--- Timer for tracking server time
+-- Timer for Time Spent in Server
 local timeSpent = 0
 local label = Server:AddLabel("Amount Of Time Spent In Server: 0 weeks, 0 days, 0 hours, 0 minutes, 0 seconds")
 
@@ -110,7 +110,7 @@ end
 
 local function updateLabel()
     local w, d, h, m, s = convertTime(timeSpent)
-    label.Text = string.format("Amount Of Time Spent In Server: %d weeks, %d days, %d hours, %d minutes, %d seconds", w, d, h, m, s)
+    label:SetText(string.format("Amount Of Time Spent In Server: %d weeks, %d days, %d hours, %d minutes, %d seconds", w, d, h, m, s))
 end
 
 task.spawn(function()
@@ -121,7 +121,7 @@ task.spawn(function()
     end
 end)
 
--- Stats tracking
+-- Abbreviate Numbers Function
 local function abbreviateNumber(value)
     if value >= 1e15 then return string.format("%.1fQa", value / 1e15)
     elseif value >= 1e12 then return string.format("%.1fT", value / 1e12)
@@ -131,41 +131,10 @@ local function abbreviateNumber(value)
     else return tostring(value) end
 end
 
+-- Create & Update Labels
 local function createMyLabels()
     local player = game.Players.LocalPlayer
     local leaderstats = player:WaitForChild("leaderstats")
-    if not leaderstats then
-        -- If leaderstats does not exist, create it
-        local leaderstatsFolder = Instance.new("Folder")
-        leaderstatsFolder.Name = "leaderstats"
-        leaderstatsFolder.Parent = player
-
-        -- Create the required stats if not present
-        local strengthStat = Instance.new("IntValue")
-        strengthStat.Name = "Strength"
-        strengthStat.Value = 0
-        strengthStat.Parent = leaderstatsFolder
-
-        local durabilityStat = Instance.new("IntValue")
-        durabilityStat.Name = "Durability"
-        durabilityStat.Value = 0
-        durabilityStat.Parent = leaderstatsFolder
-
-        local agilityStat = Instance.new("IntValue")
-        agilityStat.Name = "Agility"
-        agilityStat.Value = 0
-        agilityStat.Parent = leaderstatsFolder
-
-        local killsStat = Instance.new("IntValue")
-        killsStat.Name = "Kills"
-        killsStat.Value = 0
-        killsStat.Parent = leaderstatsFolder
-
-        local rebirthsStat = Instance.new("IntValue")
-        rebirthsStat.Name = "Rebirths"
-        rebirthsStat.Value = 0
-        rebirthsStat.Parent = leaderstatsFolder
-    end
 
     local labels = {  
         StrengthGainedLabel = Server:AddLabel("Strength Gained in Server: 0"),  
@@ -184,11 +153,11 @@ local function createMyLabels()
     }  
 
     local function updateLabels()  
-        labels.StrengthGainedLabel.Text = "Strength Gained in Server: " .. abbreviateNumber(leaderstats.Strength.Value - initialStats.Strength)  
-        labels.DurabilityGainedLabel.Text = "Durability Gained in Server: " .. abbreviateNumber(leaderstats.Durability.Value - initialStats.Durability)  
-        labels.AgilityGainedLabel.Text = "Agility Gained in Server: " .. abbreviateNumber(leaderstats.Agility.Value - initialStats.Agility)  
-        labels.KillsGainedLabel.Text = "Kills Gained in Server: " .. abbreviateNumber(leaderstats.Kills.Value - initialStats.Kills)  
-        labels.RebirthsGainedLabel.Text = "Rebirths Gained in Server: " .. (leaderstats.Rebirths.Value - initialStats.Rebirths)  
+        labels.StrengthGainedLabel:SetText("Strength Gained in Server: " .. abbreviateNumber(leaderstats.Strength.Value - initialStats.Strength))  
+        labels.DurabilityGainedLabel:SetText("Durability Gained in Server: " .. abbreviateNumber(leaderstats.Durability.Value - initialStats.Durability))  
+        labels.AgilityGainedLabel:SetText("Agility Gained in Server: " .. abbreviateNumber(leaderstats.Agility.Value - initialStats.Agility))  
+        labels.KillsGainedLabel:SetText("Kills Gained in Server: " .. abbreviateNumber(leaderstats.Kills.Value - initialStats.Kills))  
+        labels.RebirthsGainedLabel:SetText("Rebirths Gained in Server: " .. (leaderstats.Rebirths.Value - initialStats.Rebirths))  
     end  
 
     for _, stat in ipairs({"Strength", "Durability", "Agility", "Kills", "Rebirths"}) do  
