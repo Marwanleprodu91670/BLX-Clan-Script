@@ -1,46 +1,57 @@
-local Fluent = loadstring(game:HttpGet("https://raw.githubusercontent.com/AhmadV99/Main/refs/heads/main/Library/V4.lua"))()
-local SaveManager = loadstring(game:HttpGet("https://raw.githubusercontent.com/dawid-scripts/Fluent/master/Addons/SaveManager.lua"))()
-local InterfaceManager = loadstring(game:HttpGet("https://raw.githubusercontent.com/dawid-scripts/Fluent/master/Addons/InterfaceManager.lua"))()
+local Library = loadstring(game:HttpGetAsync("https://github.com/ActualMasterOogway/Fluent-Renewed/releases/latest/download/Fluent.luau"))()
+local SaveManager = loadstring(game:HttpGetAsync("https://raw.githubusercontent.com/ActualMasterOogway/Fluent-Renewed/master/Addons/SaveManager.luau"))()
+local InterfaceManager = loadstring(game:HttpGetAsync("https://raw.githubusercontent.com/ActualMasterOogway/Fluent-Renewed/master/Addons/InterfaceManager.luau"))()
 
-local Window = Fluent:CreateWindow({
-    Title = "Private Script | By Encrypted " .. Fluent.Version,
+local Window = Library:CreateWindow{
+    Title = "Private Script | By Encrypted " .. Library.Version,
     SubTitle = "by Encrypted",
     TabWidth = 160,
-    Size = UDim2.fromOffset(580, 460),
+    Size = UDim2.fromOffset(830, 525),
+    Resize = true, -- Resize this ^ Size according to a 1920x1080 screen, good for mobile users but may look weird on some devices
+    MinSize = Vector2.new(470, 380),
     Acrylic = true, -- The blur may be detectable, setting this to false disables blur entirely
-    Theme = "Private",
-    MinimizeKey = Enum.KeyCode.LeftControl -- Used when theres no MinimizeKeybind
-})
-
---Fluent provides Lucide Icons https://lucide.dev/icons/ for the tabs, icons are optional
-local Tabs = {
-    Home = Window:AddTab({ Title = "Home", Icon = "Scan-Face" }),
-    OpFarming = Window:AddTab({ Title = "Op Farming", Icon = "Farming" }),
-    Settings = Window:AddTab({ Title = "Settings", Icon = "settings" })
+    Theme = "Dark",
+    MinimizeKey = Enum.KeyCode.RightControl -- Used when there's no MinimizeKeybind
 }
 
-Tabs.Home:AddParagraph({
-        Title = "Welcome",
-        Content = "Discord Server:"
-    })
+-- Tabs
+local Tabs = {
+    Home = Window:CreateTab{
+        Title = "Home",
+        Icon = "phosphor-house-bold"
+    },
+    OpFarming = Window:CreateTab{
+        Title = "Op Farming",
+        Icon = "phosphor-rocket-bold"
+    },
+    Settings = Window:CreateTab{
+        Title = "Settings",
+        Icon = "settings"
+    }
+}
 
-Tabs.Home:AddButton({
+-- Home Tab Content
+Tabs.Home:CreateParagraph("Welcome", {
+    Title = "Welcome",
+    Content = "Discord Server: "
+})
+
+Tabs.Home:CreateButton{
     Title = "Copy Discord Server Link",
     Description = "",
     Callback = function()
         setclipboard("https://discord.gg/TVqdwWur") -- Copies the link to clipboard
     end
+}
+
+Tabs.Home:CreateParagraph("Local Player", {
+    Title = "Local Player",
+    Content = ":"
 })
 
-Tabs.Home:AddParagraph({
-        Title = "Local Player",
-        Content = ":"
-    })
-
 -- SpeedPower Slider
-local SpeedPower = Tabs.Home:AddSlider("SpeedPower", {
+local SpeedPower = Tabs.Home:CreateSlider("SpeedPower", {
     Title = "SpeedPower",
-    Description = "",
     Default = 16,
     Min = 0,
     Max = 200,
@@ -57,9 +68,8 @@ end)
 SpeedPower:SetValue(16)
 
 -- JumpPower Slider
-local JumpPower = Tabs.Home:AddSlider("JumpPower", {
+local JumpPower = Tabs.Home:CreateSlider("JumpPower", {
     Title = "JumpPower",
-    Description = "",
     Default = 50,
     Min = 0,
     Max = 300,
@@ -76,9 +86,8 @@ end)
 JumpPower:SetValue(50)
 
 -- Size Slider
-local Size = Tabs.Home:AddSlider("Size", {
+local Size = Tabs.Home:CreateSlider("Size", {
     Title = "Size",
-    Description = "",
     Default = 1,
     Min = 1,
     Max = 100,
@@ -94,13 +103,14 @@ end)
 
 Size:SetValue(1)
 
-Tabs.OpFarming:AddParagraph({
-        Title = "Op Farming Tab",
-        Content = "Hello, in this tab there are many OP functions,
-make sure to read the description of each toggle to know what to do."
-    })
+-- Op Farming Tab Content
+Tabs.OpFarming:CreateParagraph("Op Farming Tab", {
+    Title = "Op Farming Tab",
+    Content = "Hello, in this tab there are many OP functions, make sure to read the description of each toggle to know what to do."
+})
 
-local OP_AutoFarm = Tabs.OpFarming:AddToggle("OP_AutoFarm", {
+-- OP Auto Farm Toggle
+local OP_AutoFarm = Tabs.OpFarming:CreateToggle("OP_AutoFarm", {
     Title = "OP Auto Farm",
     Description = "Equip Swift Samurai Before using",
     Default = false,
@@ -129,7 +139,8 @@ local OP_AutoFarm = Tabs.OpFarming:AddToggle("OP_AutoFarm", {
     end
 })
 
-local OP_PackFarmingRebirth = Tabs.OpFarming:AddToggle("PackFarmingRebirth", {
+-- OP Pack Farming Rebirth Toggle
+local OP_PackFarmingRebirth = Tabs.OpFarming:CreateToggle("PackFarmingRebirth", {
     Title = "Pack Farming Rebirth",
     Description = "Auto Rebirth With Packs",
     Default = false,
@@ -195,7 +206,8 @@ local OP_PackFarmingRebirth = Tabs.OpFarming:AddToggle("PackFarmingRebirth", {
     end
 })
 
-local HideFrameToggle = Tabs.Main:AddToggle("HideFrame", {
+-- Hide Frame Toggle (Settings Tab)
+local HideFrameToggle = Tabs.Settings:CreateToggle("HideFrame", {
     Title = "Hide Frame",
     Description = "Hide Strength, Durability, and Agility Frame",
     Default = false,
