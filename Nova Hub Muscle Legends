@@ -1,45 +1,26 @@
 local Fluent = loadstring(game:HttpGet("https://raw.githubusercontent.com/Marwanleprodu91670/Nova-Hub/refs/heads/main/Library%202"))()
-
-if not Fluent then
-    error("Failed to load Fluent library!")
-end
 local SaveManager = loadstring(game:HttpGet("https://raw.githubusercontent.com/dawid-scripts/Fluent/master/Addons/SaveManager.lua"))()
 local InterfaceManager = loadstring(game:HttpGet("https://raw.githubusercontent.com/dawid-scripts/Fluent/master/Addons/InterfaceManager.lua"))()
 
 local Window = Fluent:CreateWindow({
-    Title = "Nova Hub Rework  |  Muscle Legends" .. Fluent.Version,
+    Title = "Nova Hub Rework | Muscle Legends " .. Fluent.Version,
     SubTitle = "by Encrypted",
     TabWidth = 160,
     Size = UDim2.fromOffset(580, 460),
-    Acrylic = true,
+    Acrylic = true, -- The blur may be detectable, setting this to false disables blur entirely
     Theme = "Private",
-    MinimizeKey = Enum.KeyCode.LeftControl
+    MinimizeKey = Enum.KeyCode.LeftControl -- Used when theres no MinimizeKeybind
 })
 
 local Tabs = {
     Home = Window:AddTab({ Title = "Home", Icon = "scan-face" }),
-    AutoFarm = Window:AddTab({ Title = "Auto Farm", Icon = "zap" }),
-    Rebirth = Window:AddTab({ Title = "Rebirth", Icon = "rotate-ccw" }),
-    Stats = Window:AddTab({ Title = "Stats", Icon = "newspaper" }),
-    AutoKill = Window:AddTab({ Title = "Auto Kill", Icon = "sword" }),
-    Settings = Window:AddTab({ Title = "Settings", Icon = "settings" })
-})
+    AutoFarm = Window:AddTab({ Title = "AutoFarm", Icon = "zap" })
+    Stats = Window:AddTab({ Title = "Stats", Icon = "newpapers" }),
+    Rebirth = Window:AddTab({ Title = "Rebirth", Icon = "rotate-ccw" })
+    Killing = Window:AddTab({ Title = "Killing", Icon = "sword" })
+    Settings = Window:AddTab({ Title = "Settings", Icon = "settings" }),
+    
 
--- Home Tab (unchanged, just added toggles section)
-Tabs.Home:AddParagraph({
-    Title = "Welcome",
-    Content = "Discord Server:"
-})
+}
 
-Tabs.Home:AddButton({
-    Title = "Copy Discord Server Link",
-    Callback = function()
-        setclipboard("https://discord.gg/TVqdwWur")
-    end
-})
-
-Tabs.Home:AddParagraph({
-    Title = "Local Player",
-    Content = ""
-})
 
