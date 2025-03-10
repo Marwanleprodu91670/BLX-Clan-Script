@@ -1,25 +1,25 @@
 local Fluent = loadstring(game:HttpGet("https://raw.githubusercontent.com/Marwanleprodu91670/Nova-Hub/refs/heads/main/Library%202"))()
 local SaveManager = loadstring(game:HttpGet("https://raw.githubusercontent.com/dawid-scripts/Fluent/master/Addons/SaveManager.lua"))()
 local InterfaceManager = loadstring(game:HttpGet("https://raw.githubusercontent.com/dawid-scripts/Fluent/master/Addons/InterfaceManager.lua"))()
-
+ 
 local Window = Fluent:CreateWindow({
     Title = "Nova Hub Rework  |  Muscle Legends" .. Fluent.Version,
     SubTitle = "by Encrypted",
     TabWidth = 160,
     Size = UDim2.fromOffset(580, 460),
-    Acrylic = true,
+    Acrylic = true, -- The blur may be detectable, setting this to false disables blur entirely
     Theme = "Private",
-    MinimizeKey = Enum.KeyCode.LeftControl
+    MinimizeKey = Enum.KeyCode.LeftControl -- Used when theres no MinimizeKeybind
 })
-
+ 
 local Tabs = {
-    Home = Window:AddTab({ Title = "Home", Icon = "scan-face" }),
+    Home = Window:AddTab({ Title = "Home", Icon = "Home" }),
     AutoFarm = Window:AddTab({ Title = "Auto Farm", Icon = "zap" }),
     Rebirth = Window:AddTab({ Title = "Rebirth", Icon = "rotate-ccw" }),
     Stats = Window:AddTab({ Title = "Stats", Icon = "newspaper" }),
     AutoKill = Window:AddTab({ Title = "Auto Kill", Icon = "sword" }),
     Settings = Window:AddTab({ Title = "Settings", Icon = "settings" })
-})
+}
 
 -- Home Tab
 Tabs.Home:AddParagraph({
@@ -29,8 +29,9 @@ Tabs.Home:AddParagraph({
 
 Tabs.Home:AddButton({
     Title = "Copy Discord Server Link",
+    Description = "",
     Callback = function()
-        setclipboard("https://discord.gg/TVqdwWur")
+        setclipboard("https://discord.gg/TVqdwWur") -- Copies the link to clipboard
     end
 })
 
@@ -42,14 +43,20 @@ Tabs.Home:AddParagraph({
 -- WalkSpeed Textbox and Apply Button
 local WalkSpeedInput = Tabs.Home:AddInput("WalkSpeed", {
     Title = "WalkSpeed",
-    Default = "16",
+    Default = "16", -- Default value for WalkSpeed
     Placeholder = "Enter WalkSpeed",
-    Numeric = true,
-    Finished = true
+    Numeric = true, -- Only allows numbers
+    Finished = true, -- Calls callback when you press enter
+    Callback = function(Value)
+    end
 })
+
+WalkSpeedInput:OnChanged(function()
+end)
 
 Tabs.Home:AddButton({
     Title = "Apply WalkSpeed",
+    Description = "Apply the WalkSpeed",
     Callback = function()
         local walkSpeedValue = tonumber(WalkSpeedInput.Value)
         if walkSpeedValue then
@@ -61,14 +68,20 @@ Tabs.Home:AddButton({
 -- JumpPower Textbox and Apply Button
 local JumpPowerInput = Tabs.Home:AddInput("JumpPower", {
     Title = "JumpPower",
-    Default = "50",
+    Default = "50", -- Default value for JumpPower
     Placeholder = "Enter JumpPower",
-    Numeric = true,
-    Finished = true
+    Numeric = true, -- Only allows numbers
+    Finished = true, -- Calls callback when you press enter
+    Callback = function(Value)
+    end
 })
+
+JumpPowerInput:OnChanged(function()
+end)
 
 Tabs.Home:AddButton({
     Title = "Apply JumpPower",
+    Description = "Apply the JumpPower",
     Callback = function()
         local jumpPowerValue = tonumber(JumpPowerInput.Value)
         if jumpPowerValue then
@@ -80,14 +93,20 @@ Tabs.Home:AddButton({
 -- Size Textbox and Apply Button
 local SizeInput = Tabs.Home:AddInput("Size", {
     Title = "Size",
-    Default = "1",
+    Default = "1", -- Default value for Size
     Placeholder = "Enter Size",
-    Numeric = true,
-    Finished = true
+    Numeric = true, -- Only allows numbers
+    Finished = true, -- Calls callback when you press enter
+    Callback = function(Value)
+    end
 })
+
+SizeInput:OnChanged(function()
+end)
 
 Tabs.Home:AddButton({
     Title = "Apply Size",
+    Description = "Apply the Size",
     Callback = function()
         local sizeValue = tonumber(SizeInput.Value)
         if sizeValue then
@@ -102,7 +121,6 @@ Tabs.AutoFarm:AddParagraph({
     Content = ""
 })
 
--- Auto Lift Toggle
 local AutoLiftToggle = Tabs.AutoFarm:AddToggle({
     Title = "Auto Lift",
     Description = "Automatically performs reps",
@@ -110,11 +128,9 @@ local AutoLiftToggle = Tabs.AutoFarm:AddToggle({
 })
 
 AutoLiftToggle:OnChanged(function(State)
-    if State then
-        while AutoLiftToggle.Enabled do
-            game:GetService("Players").LocalPlayer:WaitForChild("muscleEvent"):FireServer("rep")
-            task.wait(0.01)
-        end
+    while State do
+        game:GetService("Players").LocalPlayer:WaitForChild("muscleEvent"):FireServer("rep")
+        task.wait(0.01)
     end
 end)
 
@@ -196,7 +212,6 @@ AutoEquipHandstandsToggle:OnChanged(function(State)
 end)
 
 
--- Rebirth Tab Changes
 Tabs.Rebirth:AddParagraph({
     Title = "Rebirth Stats",
     Content = "Actual Rebirths: 0\nRebirths Gained In Server: 0"
@@ -227,8 +242,13 @@ local RebirthTargetTextbox = Tabs.Rebirth:AddInput("RebirthTarget", {
     Default = "0",
     Placeholder = "Enter Target Rebirths",
     Numeric = true,
-    Finished = true
+    Finished = true,
+    Callback = function(Value)
+    end
 })
+
+RebirthTargetTextbox:OnChanged(function()
+end)
 
 -- Rebirth Until Target Toggle
 Tabs.Rebirth:AddToggle({
@@ -262,7 +282,7 @@ Tabs.Rebirth:AddToggle({
 -- Update Rebirth Stats
 game.Players.LocalPlayer.leaderstats.Rebirths.Changed:Connect(function()
     local actualRebirths = game.Players.LocalPlayer.leaderstats.Rebirths.Value
-    local rebirthsGained = actualRebirths
+    local rebirthsGained = actualRebirths -- We track actual rebirths, but you can modify this to track a server-wide count
     local rebirthStatsText = "Actual Rebirths: " .. actualRebirths .. "\nRebirths Gained In Server: " .. rebirthsGained
     Tabs.Rebirth:GetParagraph("Rebirth Stats"):SetDesc(rebirthStatsText)
 end)
