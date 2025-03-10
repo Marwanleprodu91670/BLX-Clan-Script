@@ -43,21 +43,3 @@ Tabs.Home:AddParagraph({
     Content = ""
 })
 
--- WalkSpeed Textbox and Apply Button (unchanged)
-local WalkSpeedInput = Tabs.Home:AddInput("WalkSpeed", {
-    Title = "WalkSpeed",
-    Default = "16",
-    Placeholder = "Enter WalkSpeed",
-    Numeric = true,
-    Finished = true
-})
-
-Tabs.Home:AddButton({
-    Title = "Apply WalkSpeed",
-    Callback = function()
-        local walkSpeedValue = tonumber(WalkSpeedInput.Value)
-        if walkSpeedValue then
-            game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = walkSpeedValue
-        end
-    end
-})
